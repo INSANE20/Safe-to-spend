@@ -54,7 +54,7 @@ export default function SafeToSpendApp() {
 
   const loadBills = async () => {
     try {
-      const res = await fetch('`${API}//api/bills');
+      const res = await fetch(`${API}/api/bills`);
       const data = await res.json();
       setBills(data);
       // Always derive fixedBills from actual bill items — never from Vault Settings
@@ -62,7 +62,7 @@ export default function SafeToSpendApp() {
       setFixedBills(total);
       setBudgets(prev => ({ ...prev, 'Fixed Bills': total }));
       // Keep backend settings in sync so safe-to-spend formula is correct
-      fetch('`${API}//api/settings', {
+      fetch(`${API}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ income: null, bills: total, sync_bills_only: true })
@@ -80,7 +80,7 @@ export default function SafeToSpendApp() {
     if (isNaN(amount) || amount <= 0) return;
 
     try {
-      await fetch('`${API}//api/bills', {
+      await fetch(`${API}/api/bills`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, amount })
@@ -93,7 +93,7 @@ export default function SafeToSpendApp() {
 
   const deleteBill = async (id) => {
     try {
-      await fetch(``${API}//api/bills/${id}`, { method: 'DELETE' });
+      await fetch(`${API}/api/bills/${id}`, { method: 'DELETE' });
       await loadBills(); // loadBills will recalculate fixedBills from items
     } catch (error) {
       console.error("Failed to delete bill:", error);
@@ -106,7 +106,7 @@ export default function SafeToSpendApp() {
 
   const loadCategories = async () => {
     try {
-      const res = await fetch('`${API}//api/categories');
+      const res = await fetch(`${API}/api/categories`);
       const data = await res.json();
       setCustomCategories(data);
     } catch (error) {
@@ -121,7 +121,7 @@ export default function SafeToSpendApp() {
     
     try {
       // 1. Tell Python to save it
-      await fetch('`${API}//api/categories', {
+      await fetch(`${API}/api/categories`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, emoji })
@@ -153,7 +153,7 @@ export default function SafeToSpendApp() {
     try {
       // Only save income — bills are always derived from the bill items list
       const currentBillsTotal = bills.reduce((s, b) => s + b.amount, 0);
-      await fetch('`${API}//api/settings', {
+      await fetch(`${API}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ income: newIncome, bills: currentBillsTotal })
@@ -279,7 +279,7 @@ export default function SafeToSpendApp() {
   const fetchCoachAdvice = async () => {
     setCoachLoading(true);
     try {
-      const res = await fetch('`${API}//api/coach');
+      const res = await fetch(`${API}/api/coach`);
       const data = await res.json();
       setCoachAdvice(data.advice);
     } catch (error) {
@@ -292,7 +292,7 @@ export default function SafeToSpendApp() {
   // --- GOALS LOGIC ---
   const loadGoals = async () => {
     try {
-      const res = await fetch('`${API}//api/goals');
+      const res = await fetch(`${API}/api/goals`);
       const data = await res.json();
       // Always update — even empty array clears stale state
       setGoals(data.map(g => ({
@@ -315,7 +315,7 @@ export default function SafeToSpendApp() {
     const months = parseInt(monthsStr) || 3; // Defaults to 3 if they leave it blank
 
     try {
-      await fetch('`${API}//api/goals', {
+      await fetch(`${API}/api/goals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // We pass an empty string for the emoji to bypass it completely
@@ -332,7 +332,7 @@ export default function SafeToSpendApp() {
     if (!amountStr || isNaN(parseFloat(amountStr))) return;
 
     try {
-      await fetch(``${API}//api/goals/${goal.id}`, {
+      await fetch(`${API}/api/goals/${goal.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: parseFloat(amountStr) })
@@ -348,7 +348,7 @@ export default function SafeToSpendApp() {
     if (!isConfirmed) return;
 
     try {
-      await fetch(``${API}//api/goals/${id}`, {
+      await fetch(`${API}/api/goals/${id}`, {
         method: 'DELETE',
       });
       loadGoals(); // Instantly remove it from the screen!
@@ -359,7 +359,7 @@ export default function SafeToSpendApp() {
 
   const loadRealData = async () => {
     try {
-      const response = await fetch('`${API}//api/user-data');
+      const response = await fetch(`${API}/api/user-data`);
       const data = await response.json();
       
       // 1. Update the Transaction History
@@ -390,7 +390,7 @@ export default function SafeToSpendApp() {
   // --- TARGET GOALS LOGIC ---
   const loadTargets = async () => {
     try {
-      const res = await fetch('`${API}//api/targets');
+      const res = await fetch(`${API}/api/targets`);
       const data = await res.json();
       if (Object.keys(data).length > 0) {
         setBudgets(prev => ({ ...prev, ...data })); // Merge Python targets with existing budgets
@@ -418,7 +418,7 @@ export default function SafeToSpendApp() {
     
     try {
       // Shoot the new target to Python
-      await fetch('`${API}//api/targets', {
+      await fetch(`${API}/api/targets`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ targets: updatedBudgets })
@@ -436,7 +436,7 @@ export default function SafeToSpendApp() {
 
     try {
       // 1. Shoot the data across the bridge to your new Python Mailbox
-      await fetch('`${API}//api/transactions', {
+      await fetch(`${API}/api/transactions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -474,7 +474,7 @@ export default function SafeToSpendApp() {
 
     try {
       // 2. Send the image to the new Python Vision Mailbox
-      const res = await fetch('`${API}//api/scan-receipt', {
+      const res = await fetch(`${API}/api/scan-receipt`, {
         method: 'POST',
         body: formData,
       });
@@ -504,7 +504,7 @@ export default function SafeToSpendApp() {
     
     // 1. Auto-save it to the database instantly
     try {
-      await fetch('`${API}//api/transactions', {
+      await fetch(`${API}/api/transactions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -534,7 +534,7 @@ export default function SafeToSpendApp() {
     
     try {
       // Send the kill command to your Python SQLite Vault
-      await fetch('`${API}//api/transactions/' + id, { 
+      await fetch(`${API}/api/transactions/` + id, { 
         method: 'DELETE' 
       });
       
@@ -565,7 +565,7 @@ export default function SafeToSpendApp() {
   const saveEditTransaction = async () => {
     if (!editForm.desc || !editForm.amount) return;
     try {
-      await fetch(``${API}//api/transactions/${editForm.id}`, {
+      await fetch(`${API}/api/transactions/${editForm.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

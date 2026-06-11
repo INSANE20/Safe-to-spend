@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_URL || '`${API}/';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 import React, { useState, useMemo, useEffect } from 'react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 import Tesseract from 'tesseract.js';

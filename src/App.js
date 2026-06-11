@@ -1,8 +1,7 @@
-const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API = 'https://safe-to-spend-backend-production.up.railway.app';
 import React, { useState, useMemo, useEffect } from 'react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 import Tesseract from 'tesseract.js';
-
 // Colors
 const COLORS = {
   bg: '#0f0f14',

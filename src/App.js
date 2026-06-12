@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 
-const API = 'https://safe-to-spend-backend-production.up.railway.app';
+const API = 'https://safe-to-spend-api-gfdkgefahpfpf6ce.centralindia-01.azurewebsites.net';
 
 // Colors
 const COLORS = {
